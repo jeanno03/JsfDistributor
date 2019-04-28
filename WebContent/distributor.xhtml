@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<meta charset="utf-8" name="viewport"
+		content="width=device-width, initial-scale=1"
+		http-equiv="X-UA-Conpatible" />
+	<h:outputStylesheet library="css" name="bootstrap.min.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<title>JSF CRUD Example</title>
+
+</h:head>
+
+<h:body>
+	<center>
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-3">
+				<div class="centerDistributor">
+					<div class="card" style="width: 300px">
+						<h:graphicImage library="images"
+							name="Distributeur-de-boisson.jpg" class="card-img-top" />
+						<div class="card-body">
+							<h4 class="card-title">
+								<h:outputText value="#{myController.myDistributor().name}" />
+							</h4>
+
+							<h:form>
+								<h:commandLink action="#{myController.insertUnCent}">
+									<h:graphicImage library="images" name="unCent.jpeg"
+										class="coins" />
+								</h:commandLink>
+								<h:commandLink action="#{myController.insertDeuxCents}">
+									<h:graphicImage library="images" name="deuxCents.jpeg"
+										class="coins" />
+								</h:commandLink>
+								<h:commandLink action="#{myController.insertCinqCents}">
+									<h:graphicImage library="images" name="cinqCents.jpeg"
+										class="coins" />
+								</h:commandLink>
+								<h:commandLink action="#{myController.insertDixCents}">
+									<h:graphicImage library="images" name="dixCents.jpeg"
+										class="coins" />
+								</h:commandLink>
+
+							</h:form>
+
+							<h:form>
+								<h:commandLink action="#{myController.insertVingtCents}">
+									<h:graphicImage library="images" name="vingtCents.jpeg"
+										class="coins" />
+								</h:commandLink>
+								<h:commandLink action="#{myController.insertCinquanteCents}">
+									<h:graphicImage library="images" name="cinquanteCents.jpeg"
+										class="coins" />
+								</h:commandLink>
+								<h:commandLink action="#{myController.insertUnEuro}">
+									<h:graphicImage library="images" name="unEuro.jpeg"
+										class="coins" />
+								</h:commandLink>
+								<h:commandLink action="#{myController.insertDeuxEuros}">
+									<h:graphicImage library="images" name="deuxEuros.jpeg"
+										class="coins" />
+								</h:commandLink>
+							</h:form>
+
+							<!--     <p class="card-text">Monnaie disponible</p> -->
+							<!--     <p><h:outputText value="#{myController.myDistributor().amount}" /></p> -->
+							<h3>
+								<h:outputText value="#{myController.myDistributor().amount}"
+									var="amount" />
+							</h3>
+
+							<h:outputLabel value="il y a 150 euros minimum"
+								rendered="#{myController.distributorAmountEnought()==true}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="centerDistributor">
+					<div class="card" style="width: 300px">
+						<h:graphicImage library="images"
+							name="Distributeur-de-boisson.jpg" class="card-img-top" />
+						<div class="card-body">
+						
+							<h:outputLabel value=""
+								rendered="#{myController.myCoinSession().insert==null}">
+								<h4 class="card-title">
+									<h:form>
+										<h:commandButton action="#{myController.startInsert}"
+											value="Insérer pièces" class="btn btn-primary">
+										</h:commandButton>
+									</h:form>
+								</h4>
+							</h:outputLabel>
+							
+							<h:outputLabel value="Choisir pièces"
+								rendered="#{myController.myCoinSession()!=null}">
+								
+								<h:form>
+									<h:commandLink action="#{myController.insertUnCent2}">
+										<h:graphicImage library="images" name="unCent.jpeg"
+											class="coins" />
+									</h:commandLink>
+									<h:commandLink action="#{myController.insertDeuxCents2}">
+										<h:graphicImage library="images" name="deuxCents.jpeg"
+											class="coins" />
+									</h:commandLink>
+									<h:commandLink action="#{myController.insertCinqCents2}">
+										<h:graphicImage library="images" name="cinqCents.jpeg"
+											class="coins" />
+									</h:commandLink>
+									<h:commandLink action="#{myController.insertDixCents2}">
+										<h:graphicImage library="images" name="dixCents.jpeg"
+											class="coins" />
+									</h:commandLink>
+								</h:form>
+
+								<h:form>
+									<h:commandLink action="#{myController.insertVingtCents2}">
+										<h:graphicImage library="images" name="vingtCents.jpeg"
+											class="coins" />
+									</h:commandLink>
+									<h:commandLink action="#{myController.insertCinquanteCents2}">
+										<h:graphicImage library="images" name="cinquanteCents.jpeg"
+											class="coins" />
+									</h:commandLink>
+									<h:commandLink action="#{myController.insertUnEuro2}">
+										<h:graphicImage library="images" name="unEuro.jpeg"
+											class="coins" />
+									</h:commandLink>
+									<h:commandLink action="#{myController.insertDeuxEuros2}">
+										<h:graphicImage library="images" name="deuxEuros.jpeg"
+											class="coins" />
+									</h:commandLink>
+								</h:form>
+								
+							</h:outputLabel>
+
+							<h3>
+								<h:outputText value="#{myController.myCoinSession().insert}"
+									var="amount" />
+							</h3>
+							<h:outputLabel value=""
+								rendered="#{myController.myCoinSession().insert>0}">
+								<h:form>
+									<h:commandButton action="#{myController.recupArgent}"
+										value="Récupérer argent" class="btn btn-danger">
+									</h:commandButton>
+								</h:form>
+							</h:outputLabel>
+							<h:outputLabel value="Choisissez votre boisson"
+								rendered="#{myController.myCoinSession().insert>=0.8}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+
+	</center>
+
+	<table
+		class="table table-striped table-hover table-bordered tableUpdated">
+		<thead>
+			<tr>
+				<th style="width: 110px">Nom</th>
+				<th style="width: 50px">Prix</th>
+				<th style="width: 50px">Qté</th>
+				<th style="width: 50px">Choisir</th>
+			</tr>
+		</thead>
+
+		<h:dataTable value="#{myController.myDistributor().containers}"
+			var="container"
+			class="table table-striped table-hover table-bordered tableUpdated">
+
+			<h:column headerText="Drink name">
+				<h:outputText value="#{container.drink.name}" />
+			</h:column>
+
+			<h:column headerText="Drink price">
+				<h:outputText value="#{container.drink.price}" />
+			</h:column>
+
+			<h:column headerText="Drink amount">
+				<h:outputText value="#{container.amount}" />
+			</h:column>
+
+			<h:column headerText="Drink choice">
+				<h:outputLabel value=""
+					rendered="#{myController.myCoinSession().insert>=container.drink.price}">
+					<h:form>
+						<h:commandButton
+							action="#{myController.getDrink(container.drink.name)}"
+							value="Votre choix" class="btn btn-primary">
+						</h:commandButton>
+					</h:form>
+				</h:outputLabel>
+			</h:column>
+
+		</h:dataTable>
+
+	</table>
+
+</h:body>
+
+</html>

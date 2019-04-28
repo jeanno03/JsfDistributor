@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<meta charset="utf-8" name="viewport"
+		content="width=device-width, initial-scale=1"
+		http-equiv="X-UA-Conpatible" />
+	<h:outputStylesheet library="css" name="bootstrap.min.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<title>JSF CRUD Example</title>
+
+</h:head>
+
+<h:body>
+	<table
+		class="table table-striped table-hover table-bordered tableUpdated">
+		<thead>
+			<tr>
+				<th style="width: 110px">Nom</th>
+				<th style="width: 50px">Prix</th>
+			</tr>
+		</thead>
+
+		<h:dataTable value="#{myController.getDrinksBean()}" var="drink"
+			class="table table-striped table-hover table-bordered tableUpdated">
+
+			<h:column headerText="Drink name">
+				<h:outputText value="#{drink.name}" />
+			</h:column>
+
+			<h:column headerText="Drink price">
+				<h:outputText value="#{drink.price}" />
+			</h:column>
+
+		</h:dataTable>
+
+	</table>
+
+	<br />
+
+	<center>
+		<h:form>
+			<h:commandButton value="data for container"
+				action="#{myController.generateContainer}" class="btn btn-primary"></h:commandButton>
+		</h:form>
+	</center>
+
+	<br />
+
+	<center>
+		<h:form>
+			<h:commandButton action="#{myController.generateDistributor}"
+				value="data for distributor" class="btn btn-primary">
+			</h:commandButton>
+		</h:form>
+	</center>
+
+	<br />
+
+	<center>
+		<h:form>
+			<h:commandButton action="#{myController.goToDistributor}"
+				value="Go to distributor" class="btn btn-primary">
+			</h:commandButton>
+		</h:form>
+	</center>
+
+</h:body>
+
+</html>
