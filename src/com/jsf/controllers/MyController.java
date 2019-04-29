@@ -119,42 +119,42 @@ public class MyController implements Serializable{
 	}
 
 	public void insertUnCent() {   	
-		distributorBean.setInsert(Coins.UN_CENTIME);
+		distributorBean.setCoinsHash(Coins.UN_CENTIME);
 		System.out.println("on insert 1 cent");
 	}
 
 	public void insertDeuxCents() {   	
-		distributorBean.setInsert(Coins.DEUX_CENTIMES);
+		distributorBean.setCoinsHash(Coins.DEUX_CENTIMES);
 		System.out.println("on insert 2 cents");
 	}	
 
 	public void insertCinqCents() {   	
-		distributorBean.setInsert(Coins.CINQ_CENTIMES);
+		distributorBean.setCoinsHash(Coins.CINQ_CENTIMES);
 		System.out.println("on insert 5 cent");
 	}
 
 	public void insertDixCents() {   	
-		distributorBean.setInsert(Coins.DIX_CENTIMES);
+		distributorBean.setCoinsHash(Coins.DIX_CENTIMES);
 		System.out.println("on insert 10 cent");
 	}	
 
 	public void insertVingtCents() {   	
-		distributorBean.setInsert(Coins.VINGT_CENTIMES);
+		distributorBean.setCoinsHash(Coins.VINGT_CENTIMES);
 		System.out.println("on insert 20 cent");
 	}	
 
 	public void insertCinquanteCents() {   	
-		distributorBean.setInsert(Coins.CINQUANTE_CENTIMES);
+		distributorBean.setCoinsHash(Coins.CINQUANTE_CENTIMES);
 		System.out.println("on insert 50 cent");
 	}
 
 	public void insertUnEuro() {   	
-		distributorBean.setInsert(Coins.UN_EUROS);
+		distributorBean.setCoinsHash(Coins.UN_EUROS);
 		System.out.println("on insert 1 Euro");
 	}	
 
 	public void insertDeuxEuros() {   	
-		distributorBean.setInsert(Coins.DEUX_EUROS);
+		distributorBean.setCoinsHash(Coins.DEUX_EUROS);
 		System.out.println("on insert 2 Euros");
 	}	
 
@@ -241,7 +241,12 @@ public class MyController implements Serializable{
 		System.out.println("Vous avez choisi : " + drinkName);
 		//on rajoute l'argent à la caisse
 		List<Coins> coins = coinsSession.getCoinsList();
-		distributorBean.setListInsert(coins);
+		
+		for(int i=0;i<coins.size();i++) {
+			distributorBean.setCoinsHash(coins.get(i));
+		}
+		
+//		distributorBean.setListInsert(coins);
 
 		//on rend la monnaie en pièce de 1 cent :)
 		float difference = getDifference(drinkName);
