@@ -94,8 +94,8 @@ public class DistributorBean {
 	//		return this.amount + cumul - this.toRemove;
 	//	}
 
-	public float getAmount() {
-		return regularizeAmount();
+	public float getAmount() {		
+		return this.amount+ regularizeAmount();	 
 	}
 
 	public void setCoinsHash(Coins coins) {
@@ -130,19 +130,19 @@ public class DistributorBean {
 	}
 //a revoir
 	private float regularizeAmount() {
-		
+		float sum = 0f;
 		try {
 		for(Map.Entry<Coins,Integer> entry : coinsHashMap.entrySet()) {
-			amount = amount + (entry.getKey().getValeur() * entry.getValue());
-			System.out.println("entry.getKey().getValeur() : " + entry.getKey().getValeur());
-			System.out.println("entry.getValue() : " + entry.getValue());
-			System.out.println("résultat : " + amount);
+			sum += (entry.getKey().getValeur() * entry.getValue());
+//			System.out.println("entry.getKey().getValeur() : " + entry.getKey().getValeur());
+//			System.out.println("entry.getValue() : " + entry.getValue());
+//			System.out.println("résultat : " + sum);
 		}
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("la somme est : " + amount);
-		return amount;
+//		System.out.println("la somme est : " + sum);
+		return sum;
 	}
 
 //	private float getInsertAmount() {

@@ -27,6 +27,8 @@ import com.jsf.daos.DrinkDao;
 import com.jsf.daos.GenericityDao;
 import com.jsf.daos.SpecificDao;
 import com.jsf.enums.Coins;
+import com.jsf.services.MyServices;
+import com.jsf.services.MyServicesImpl;
 import com.jsf.services.student.StudentService;
 import com.jsf.sessions.CoinsSession;
 
@@ -39,6 +41,8 @@ public class MyController implements Serializable{
 	public static GenericityDao distributorDao = new DistributorDao();
 	public static SpecificDao SpecificDao = new SpecificDao();
 	public static String distributorName = "Mon distributeur";
+	
+	public static MyServices myServices = new MyServicesImpl();
 
 	private static DistributorBean distributorBean;
 
@@ -251,11 +255,15 @@ public class MyController implements Serializable{
 		//on rend la monnaie en pièce de 1 cent :)
 		float difference = getDifference(drinkName);
 		System.out.println("On rend : " + difference);
+		
+		List<Coins> myCoins = myServices.getMonnaie(difference);
+		
 		coinsSession = null;
 		coinsSession = new CoinsSession();
-		List<Coins> returnCoins = returnCoins(difference);	
-//		distributorBean.removeCoins(returnCoins);
-
+		
+		coinsSession.setCoinsList(myCoins);
+		// derniere etapes retirer de coinsSession de distributorBean
+		
 	}
 	
 	public void recupArgent() {
@@ -283,7 +291,7 @@ public class MyController implements Serializable{
 		float nb = difference*100;
 		List<Coins> coins = new ArrayList();
 		for(int i=0;i<nb;i++) {
-			System.out.println(i+")on rend 1 cent");
+			System.out.println(i+") 1 cent");
 			coinsSession.setInsert(Coins.UN_CENTIME);
 			coins.add(Coins.UN_CENTIME);
 
