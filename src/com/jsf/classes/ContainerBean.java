@@ -1,4 +1,4 @@
-package com.jsf.beans;
+package com.jsf.classes;
 
 import java.util.List;
 
@@ -7,8 +7,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
-
-//@ManagedBean @RequestScoped
 public class ContainerBean {
 	
 	private int id;

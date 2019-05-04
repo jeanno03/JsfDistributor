@@ -1,4 +1,4 @@
-package com.jsf.sessions;
+package com.jsf.beans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,13 @@ import com.jsf.enums.Coins;
 @SessionScoped
 public class CoinsSession {
 	
-	private float insert;
+	private float insert = 0f;
 	private List<Coins> coinsList = new ArrayList();
 
 	public CoinsSession() {
 		super();
+		insert = 0f;
+		coinsList = new ArrayList();
 	}
 	
 	public void setInsert(Coins coins){
@@ -26,8 +28,7 @@ public class CoinsSession {
 
 	public float getInsert() {
 		Stream <Coins> coinsStream = this.coinsList.stream();
-		float cumul = coinsStream.map(x->x.getValeur()).reduce(0f, Float ::sum);
-		this.insert = cumul;
+		insert = coinsStream.map(x->x.getValeur()).reduce(0f, Float ::sum);
 		return insert;
 	}
 

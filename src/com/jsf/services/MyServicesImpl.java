@@ -17,7 +17,9 @@ public class MyServicesImpl implements MyServices{
 
 	@Override
 	public List<Coins> getMonnaie(float amount) {
-
+		
+		coinsList = new ArrayList();
+		
 		float monnaieRestantApres2Euros = monnaieAfterTwoEuros(amount);
 		float monnaieRestantApres1Euro = monnaieAfterGeneriqueCents(monnaieRestantApres2Euros, Coins.UN_EUROS);	
 		float monnaieRestantApres50Cents = monnaieAfterGeneriqueCents(monnaieRestantApres1Euro, Coins.CINQUANTE_CENTIMES);	

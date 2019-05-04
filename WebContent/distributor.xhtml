@@ -85,7 +85,7 @@
 						<h:graphicImage library="images"
 							name="Distributeur-de-boisson.jpg" class="card-img-top" />
 						<div class="card-body">
-						
+
 							<h:outputLabel value=""
 								rendered="#{myController.myCoinSession().insert==null}">
 								<h4 class="card-title">
@@ -96,10 +96,10 @@
 									</h:form>
 								</h4>
 							</h:outputLabel>
-							
+
 							<h:outputLabel value="Choisir pièces"
 								rendered="#{myController.myCoinSession()!=null}">
-								
+
 								<h:form>
 									<h:commandLink action="#{myController.insertUnCent2}">
 										<h:graphicImage library="images" name="unCent.jpeg"
@@ -137,7 +137,7 @@
 											class="coins" />
 									</h:commandLink>
 								</h:form>
-								
+
 							</h:outputLabel>
 
 							<h3>
@@ -158,9 +158,33 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3"></div>
-		</div>
 
+			<div class="col-md-3">
+				<div class="centerDistributor">
+					<div class="card" style="width: 300px">
+
+						<h4 class="card-title">Votre monnaie</h4>
+
+						<table
+							class="table table-striped table-hover table-bordered tableUpdated">
+							<thead>
+								<tr>
+									<h:outputText value="#{myController.displayDifference()}" />
+
+								</tr>
+							</thead>
+							<h:dataTable value="#{myController.getMoney()}" var="money"
+								class="table table-striped table-hover table-bordered tableUpdated">
+								<h:column headerText="image">
+									<h:graphicImage library="images" name="#{money.path}"
+										class="coins" />
+								</h:column>
+							</h:dataTable>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</center>
 
 	<table

@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.jsf.beans.ContainerBean;
-import com.jsf.beans.DistributorBean;
-import com.jsf.beans.DrinkBean;
+import com.jsf.classes.ContainerBean;
+import com.jsf.classes.DistributorBean;
+import com.jsf.classes.DrinkBean;
 import com.jsf.controllers.MyController;
 import com.jsf.tools.MyConnection;
 
@@ -76,7 +76,7 @@ public class SpecificDao {
 			preparedStatement = myConnection.getConnection().prepareStatement(
 					"insert into distributor(distributor_name, distributor_amount) values (?,?)");
 			preparedStatement.setString(1, "Mon distributeur");
-			preparedStatement.setFloat(2, 100f);
+			preparedStatement.setFloat(2, 0f);
 			int result = preparedStatement.executeUpdate();
 			System.out.println("sauvegarde de distributor : " + result);
 			myConnection.connection.close();

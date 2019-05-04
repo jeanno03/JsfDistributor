@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.jsf.beans.ContainerBean;
-import com.jsf.beans.DrinkBean;
+import com.jsf.classes.ContainerBean;
+import com.jsf.classes.DrinkBean;
 import com.jsf.tools.MyConnection;
 
 public class ContainerDao implements GenericityDao{

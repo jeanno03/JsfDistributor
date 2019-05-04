@@ -3,6 +3,7 @@ package com.jsf.controllers;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,12 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import com.jsf.beans.ContainerBean;
-import com.jsf.beans.DistributorBean;
-import com.jsf.beans.DrinkBean;
+import com.jsf.beans.CoinsSession;
+import com.jsf.beans.MoneyReturn;
+import com.jsf.classes.ContainerBean;
+import com.jsf.classes.DistributorBean;
+import com.jsf.classes.DrinkBean;
+import com.jsf.constants.MyConstant;
 import com.jsf.daos.ContainerDao;
 import com.jsf.daos.DistributorDao;
 import com.jsf.daos.DrinkDao;
@@ -30,83 +34,51 @@ import com.jsf.enums.Coins;
 import com.jsf.services.MyServices;
 import com.jsf.services.MyServicesImpl;
 import com.jsf.services.student.StudentService;
-import com.jsf.sessions.CoinsSession;
 
 @ManagedBean
 @SessionScoped
-public class MyController implements Serializable{
+public class MyController extends MySuperController implements Serializable{
 
-	public static GenericityDao drinkDao = new DrinkDao();
-	public static GenericityDao containerDao = new ContainerDao();
-	public static GenericityDao distributorDao = new DistributorDao();
 	public static SpecificDao SpecificDao = new SpecificDao();
-	public static String distributorName = "Mon distributeur";
-	
 	public static MyServices myServices = new MyServicesImpl();
 
 	private static DistributorBean distributorBean;
-
 	private CoinsSession coinsSession = null;
+	private float difference;
 
 	public MyController() {
 		super();
 	}
 
-	public String goToStudents() {
-		return "/studentsList.xhtml?faces-redirect=true";
-	}
-
-	public String goToMyApplication() {
-		return "/application.xhtml?faces-redirect=true";
-	}
-
-	public static List<DrinkBean> getDrinksBean(){
-
-		List<DrinkBean> drinksBean = (List<DrinkBean>) drinkDao.getObjects();
-		return drinksBean;
-	}
-
-	public void generateContainer() {
-		List<DrinkBean> drinksBean = getDrinksBean();
-		SpecificDao.generateContainer(drinksBean);
-	}
-
-	public void generateDistributor() {
-
-		List<ContainerBean> containersBean = (List<ContainerBean>) containerDao.getObjects();
-		SpecificDao.generateDistributor(containersBean, distributorName);
-	}
-
-
 	public String goToDistributor() {	
 		initDistributor();
+			getMoney();
+			difference = 0f;
+			displayDifference();
 		return "/distributor.xhtml?faces-redirect=true";
-	}
-
-	//inutile
-	public List<ContainerBean> getContainersBeanFromDistributor(){
-		List<ContainerBean> containersBean = getDistributor().getContainers();
-		return containersBean;
-	}
-
-	private DistributorBean getDistributor() {
-		DistributorBean distributorBean = (DistributorBean) distributorDao.getObjectById(distributorName);		
-		//contains ContainerBean + DrinkBean
-		List<ContainerBean> containersBean = SpecificDao.getContainersByDistributor(distributorBean.getId());		
-		distributorBean.setContainers(containersBean);
-		return distributorBean;
 	}
 
 	private void initDistributor() {
 		distributorBean=new DistributorBean();
 		distributorBean=getDistributor();
+		insert100CoinsToDistributorBean(Coins.UN_CENTIME);
+		insert100CoinsToDistributorBean(Coins.DEUX_CENTIMES);
+		insert100CoinsToDistributorBean(Coins.CINQ_CENTIMES);
+		insert100CoinsToDistributorBean(Coins.DIX_CENTIMES);
+		insert100CoinsToDistributorBean(Coins.VINGT_CENTIMES);
+		insert100CoinsToDistributorBean(Coins.CINQUANTE_CENTIMES);
+		insert100CoinsToDistributorBean(Coins.UN_EUROS);
+		insert100CoinsToDistributorBean(Coins.DEUX_EUROS);
+	}
 
+	private void insert100CoinsToDistributorBean(Coins coins) {
+		for(int i=0;i<100;i++) {
+			distributorBean.setCoinsHash(coins);
+		}
 	}
 
 	public void startInsert() {
-		System.out.println("startInsert()");
-		CoinsSession coinsSession = new CoinsSession();
-		this.coinsSession = coinsSession;
+		coinsSession = new CoinsSession();
 	}
 
 	//	@PostConstruct
@@ -124,42 +96,34 @@ public class MyController implements Serializable{
 
 	public void insertUnCent() {   	
 		distributorBean.setCoinsHash(Coins.UN_CENTIME);
-		System.out.println("on insert 1 cent");
 	}
 
 	public void insertDeuxCents() {   	
 		distributorBean.setCoinsHash(Coins.DEUX_CENTIMES);
-		System.out.println("on insert 2 cents");
 	}	
 
 	public void insertCinqCents() {   	
 		distributorBean.setCoinsHash(Coins.CINQ_CENTIMES);
-		System.out.println("on insert 5 cent");
 	}
 
 	public void insertDixCents() {   	
 		distributorBean.setCoinsHash(Coins.DIX_CENTIMES);
-		System.out.println("on insert 10 cent");
 	}	
 
 	public void insertVingtCents() {   	
 		distributorBean.setCoinsHash(Coins.VINGT_CENTIMES);
-		System.out.println("on insert 20 cent");
 	}	
 
 	public void insertCinquanteCents() {   	
 		distributorBean.setCoinsHash(Coins.CINQUANTE_CENTIMES);
-		System.out.println("on insert 50 cent");
 	}
 
 	public void insertUnEuro() {   	
 		distributorBean.setCoinsHash(Coins.UN_EUROS);
-		System.out.println("on insert 1 Euro");
 	}	
 
 	public void insertDeuxEuros() {   	
 		distributorBean.setCoinsHash(Coins.DEUX_EUROS);
-		System.out.println("on insert 2 Euros");
 	}	
 
 	public boolean distributorAmountEnought() {
@@ -168,134 +132,156 @@ public class MyController implements Serializable{
 
 		if(distributorBean.getAmount()>=150) {			
 			more150 = true;
-			System.out.println("monnai is enought");
 		}
 		else {
 			more150 = false;
 		}
 		return more150;
 	}
+	
+	private void addDifference(Coins coins) {
+		difference +=coins.getValeur();
+		displayDifference();
+	}
 
 	public void insertUnCent2() {   
-
 		this.coinsSession.setInsert(Coins.UN_CENTIME);
-
-		System.out.println("on insert 1 cent v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.UN_CENTIME);
 	}
 
 	public void insertDeuxCents2() {   	
-
 		coinsSession.setInsert(Coins.DEUX_CENTIMES);
-
-		System.out.println("on insert 2 cents v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.DEUX_CENTIMES);
 	}	
 
 	public void insertCinqCents2() {   
-
 		coinsSession.setInsert(Coins.CINQ_CENTIMES);
-
-		System.out.println("on insert 5 cent v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.CINQ_CENTIMES);
 	}
 
 	public void insertDixCents2() { 
-
 		coinsSession.setInsert(Coins.DIX_CENTIMES);
-
-		System.out.println("on insert 10 cent v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.DIX_CENTIMES);
 	}	
 
 	public void insertVingtCents2() {   
-
 		coinsSession.setInsert(Coins.VINGT_CENTIMES);
-
-		System.out.println("on insert 20 cent v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.VINGT_CENTIMES);
 	}	
 
 	public void insertCinquanteCents2() {   	
-
 		coinsSession.setInsert(Coins.CINQUANTE_CENTIMES);
-
-		System.out.println("on insert 50 cent v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.CINQUANTE_CENTIMES);
 	}
 
 	public void insertUnEuro2() {   
-
 		coinsSession.setInsert(Coins.UN_EUROS);
-
-		System.out.println("on insert 1 Euro v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.UN_EUROS);
 	}	
 
 	public void insertDeuxEuros2() { 
-
 		coinsSession.setInsert(Coins.DEUX_EUROS);
-
-		System.out.println("on insert 2 Euros v2");
-		System.out.println("total : " + coinsSession.getInsert());
+		addDifference(Coins.DEUX_EUROS);
 	}	
 
 	public void getDrink(String drinkName) {
 
-		System.out.println("Vous avez choisi : " + drinkName);
 		//on rajoute l'argent à la caisse
 		List<Coins> coins = coinsSession.getCoinsList();
-		
 		for(int i=0;i<coins.size();i++) {
 			distributorBean.setCoinsHash(coins.get(i));
 		}
-		
-//		distributorBean.setListInsert(coins);
 
-		//on rend la monnaie en pièce de 1 cent :)
-		float difference = getDifference(drinkName);
-		System.out.println("On rend : " + difference);
+		difference = getDifference(drinkName);
 		
+		//list de coins a rendre
 		List<Coins> myCoins = myServices.getMonnaie(difference);
-		
-		coinsSession = null;
 		coinsSession = new CoinsSession();
-		
 		coinsSession.setCoinsList(myCoins);
-		// derniere etapes retirer de coinsSession de distributorBean
-		
+		getMoney();
+		displayDifference();
+		//on retire la monnaie rendu du distributeur
+		distributorBean.removeCoinsHash(myCoins);
+
 	}
-	
+
 	public void recupArgent() {
 		coinsSession = null;
+		difference = 0f;
+		displayDifference();
 	}
 
-	private float getDifference(String drinkName) {
-		List<ContainerBean> containersBean = distributorBean.getContainers();
+	public float getDifference(String drinkName) {
+		
+		float difference = 0f;
+		
+			try {
+				List<ContainerBean> containersBean = distributorBean.getContainers();
 
-		float drinkPrice =0f;
-		for(int i=0;i<containersBean.size();i++) {
-			if(containersBean.get(i).getDrink().getName().equals(drinkName)) {
-				drinkPrice=containersBean.get(i).getDrink().getPrice();
-				break;
-			}
-		}
-
-		float insertMonnai = coinsSession.getInsert();
-		float difference = insertMonnai - drinkPrice ;
+				float drinkPrice =0f;
+				for(int i=0;i<containersBean.size();i++) {
+					if(containersBean.get(i).getDrink().getName().equals(drinkName)) {
+						drinkPrice=containersBean.get(i).getDrink().getPrice();
+						break;
+					}
+				}
+				float insertMonnai = coinsSession.getInsert();
+				difference = insertMonnai - drinkPrice ;
+				}catch(Exception ex) {
+					ex.printStackTrace();
+				}
+		
 		return difference;
 	}
 	
-	private List<Coins> returnCoins(float difference){
-
-		float nb = difference*100;
-		List<Coins> coins = new ArrayList();
-		for(int i=0;i<nb;i++) {
-			System.out.println(i+") 1 cent");
-			coinsSession.setInsert(Coins.UN_CENTIME);
-			coins.add(Coins.UN_CENTIME);
-
-		}
-		return coins;
+	public float displayDifference() {
+		return difference;
 	}
+	
+	public List<MoneyReturn> getMoney(){
+		List<MoneyReturn>  moneyReturn = new ArrayList();
+		try {
+		for(int i=0;i<coinsSession.getCoinsList().size();i++) {
+			if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.UN_CENTIME)){
+				MoneyReturn m = new MoneyReturn("unCent.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.DEUX_CENTIMES)){
+				MoneyReturn m = new MoneyReturn("deuxCents.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.CINQ_CENTIMES)){
+				MoneyReturn m = new MoneyReturn("cinqCents.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.DIX_CENTIMES)){
+				MoneyReturn m = new MoneyReturn("dixCents.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.VINGT_CENTIMES)){
+				MoneyReturn m = new MoneyReturn("vingtCents.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.CINQUANTE_CENTIMES)){
+				MoneyReturn m = new MoneyReturn("cinquanteCents.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.UN_EUROS)){
+				MoneyReturn m = new MoneyReturn("unEuro.jpeg");
+				moneyReturn.add(m);
+			}
+			else if(testCoinsList(coinsSession.getCoinsList().get(i), Coins.DEUX_EUROS)){
+				MoneyReturn m = new MoneyReturn("deuxEuros.jpeg");
+				moneyReturn.add(m);
+			}
+		
+		}	
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return moneyReturn;
+		
+	}
+
 }

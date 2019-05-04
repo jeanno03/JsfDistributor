@@ -3,7 +3,7 @@ package com.jsf.daos;
 import java.util.Collection;
 import java.util.List;
 
-import com.jsf.beans.DrinkBean;
+import com.jsf.classes.DrinkBean;
 
 public interface GenericityDao <T extends Object>{
 	
