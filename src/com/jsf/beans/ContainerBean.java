@@ -1,4 +1,4 @@
-package com.jsf.classes;
+package com.jsf.beans;
 
 import java.util.List;
 

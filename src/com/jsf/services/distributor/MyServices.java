@@ -1,4 +1,4 @@
-package com.jsf.services;
+package com.jsf.services.distributor;
 
 import java.util.List;
 

@@ -20,10 +20,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import com.jsf.beans.CoinsSession;
+import com.jsf.beans.ContainerBean;
+import com.jsf.beans.DistributorBean;
+import com.jsf.beans.DrinkBean;
 import com.jsf.beans.MoneyReturn;
-import com.jsf.classes.ContainerBean;
-import com.jsf.classes.DistributorBean;
-import com.jsf.classes.DrinkBean;
 import com.jsf.constants.MyConstant;
 import com.jsf.daos.ContainerDao;
 import com.jsf.daos.DistributorDao;
@@ -31,13 +31,14 @@ import com.jsf.daos.DrinkDao;
 import com.jsf.daos.GenericityDao;
 import com.jsf.daos.SpecificDao;
 import com.jsf.enums.Coins;
-import com.jsf.services.MyServices;
-import com.jsf.services.MyServicesImpl;
+import com.jsf.services.distributor.MyServices;
+import com.jsf.services.distributor.MyServicesImpl;
 import com.jsf.services.student.StudentService;
+import com.jsf.tools.FloatConverterInterfaceImpl;
 
 @ManagedBean
 @SessionScoped
-public class MyController extends MySuperController implements Serializable{
+public class MyController extends MySuperController implements Serializable, FloatConverterInterfaceImpl{
 
 	public static SpecificDao SpecificDao = new SpecificDao();
 	public static MyServices myServices = new MyServicesImpl();
@@ -140,7 +141,8 @@ public class MyController extends MySuperController implements Serializable{
 	}
 	
 	private void addDifference(Coins coins) {
-		difference +=coins.getValeur();
+		difference = FloatConverterInterfaceImpl.getFloatWithTwoDecimal(difference);
+		difference +=FloatConverterInterfaceImpl.getFloatWithTwoDecimal(coins.getValeur());
 		displayDifference();
 	}
 
@@ -202,6 +204,9 @@ public class MyController extends MySuperController implements Serializable{
 		displayDifference();
 		//on retire la monnaie rendu du distributeur
 		distributorBean.removeCoinsHash(myCoins);
+		
+		//on met a jour le distributeur
+		distributorBean = SpecificDao.getUpdateDistributor(drinkName, distributorBean);
 
 	}
 
@@ -225,17 +230,17 @@ public class MyController extends MySuperController implements Serializable{
 						break;
 					}
 				}
-				float insertMonnai = coinsSession.getInsert();
+				float insertMonnai = coinsSession.getAmount();
 				difference = insertMonnai - drinkPrice ;
 				}catch(Exception ex) {
 					ex.printStackTrace();
 				}
 		
-		return difference;
+		return FloatConverterInterfaceImpl.getFloatWithTwoDecimal(difference);
 	}
 	
 	public float displayDifference() {
-		return difference;
+		return FloatConverterInterfaceImpl.getFloatWithTwoDecimal(difference);
 	}
 	
 	public List<MoneyReturn> getMoney(){

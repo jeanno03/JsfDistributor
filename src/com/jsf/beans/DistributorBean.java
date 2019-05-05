@@ -1,4 +1,4 @@
-package com.jsf.classes;
+package com.jsf.beans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,7 @@ import javax.faces.bean.SessionScoped;
 
 import com.jsf.enums.Coins;
 import com.jsf.enums.MyMessage;
+import com.jsf.tools.FloatConverterInterfaceImpl;
 
 public class DistributorBean {
 
@@ -65,7 +66,7 @@ public class DistributorBean {
 	}
 
 	public float getAmount() {		
-		return this.amount+ regularizeAmount();	 
+		return FloatConverterInterfaceImpl.getFloatWithTwoDecimal(this.amount+ regularizeAmount());	 
 	}
 
 	public void setCoinsHash(Coins coins) {
@@ -90,13 +91,14 @@ public class DistributorBean {
 		float sum = 0f;
 		try {
 		for(Map.Entry<Coins,Integer> entry : coinsHashMap.entrySet()) {
+			sum = FloatConverterInterfaceImpl.getFloatWithTwoDecimal(sum);
 			sum += (entry.getKey().getValeur() * entry.getValue());
 
 		}
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		return sum;
+		return FloatConverterInterfaceImpl.getFloatWithTwoDecimal(sum);
 	}
 
 	public List<ContainerBean> getContainers() {
@@ -114,5 +116,15 @@ public class DistributorBean {
 	public void setMyMessages(Set<MyMessage> myMessages) {
 		this.myMessages = myMessages;
 	}
+
+	public Map<Coins, Integer> getCoinsHashMap() {
+		return coinsHashMap;
+	}
+
+	public void setCoinsHashMap(Map<Coins, Integer> coinsHashMap) {
+		this.coinsHashMap = coinsHashMap;
+	}
+	
+	
 
 }

@@ -87,7 +87,7 @@
 						<div class="card-body">
 
 							<h:outputLabel value=""
-								rendered="#{myController.myCoinSession().insert==null}">
+								rendered="#{myController.myCoinSession().amount==null}">
 								<h4 class="card-title">
 									<h:form>
 										<h:commandButton action="#{myController.startInsert}"
@@ -141,11 +141,11 @@
 							</h:outputLabel>
 
 							<h3>
-								<h:outputText value="#{myController.myCoinSession().insert}"
+								<h:outputText value="#{myController.myCoinSession().amount}"
 									var="amount" />
 							</h3>
 							<h:outputLabel value=""
-								rendered="#{myController.myCoinSession().insert>0}">
+								rendered="#{myController.myCoinSession().amount>0}">
 								<h:form>
 									<h:commandButton action="#{myController.recupArgent}"
 										value="Récupérer argent" class="btn btn-danger">
@@ -153,7 +153,7 @@
 								</h:form>
 							</h:outputLabel>
 							<h:outputLabel value="Choisissez votre boisson"
-								rendered="#{myController.myCoinSession().insert>=0.8}" />
+								rendered="#{myController.myCoinSession().amount>=0.8}" />
 						</div>
 					</div>
 				</div>
@@ -216,7 +216,7 @@
 
 			<h:column headerText="Drink choice">
 				<h:outputLabel value=""
-					rendered="#{myController.myCoinSession().insert>=container.drink.price}">
+					rendered="#{myController.myCoinSession().amount>=container.drink.price}">
 					<h:form>
 						<h:commandButton
 							action="#{myController.getDrink(container.drink.name)}"

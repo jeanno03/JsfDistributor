@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.jsf.classes.ContainerBean;
-import com.jsf.classes.DistributorBean;
+import com.jsf.beans.ContainerBean;
+import com.jsf.beans.DistributorBean;
 import com.jsf.tools.MyConnection;
 
 public class DistributorDao implements GenericityDao{

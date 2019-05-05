@@ -8,17 +8,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.jsf.enums.Coins;
+import com.jsf.tools.FloatConverterInterfaceImpl;
 
-@ManagedBean
-@SessionScoped
-public class CoinsSession {
+public class CoinsSession{
 	
-	private float insert = 0f;
+	private float amount = 0f;
 	private List<Coins> coinsList = new ArrayList();
 
 	public CoinsSession() {
 		super();
-		insert = 0f;
+		amount = 0f;
 		coinsList = new ArrayList();
 	}
 	
@@ -26,10 +25,10 @@ public class CoinsSession {
 		this.coinsList.add(coins);
 	}
 
-	public float getInsert() {
+	public float getAmount() {
 		Stream <Coins> coinsStream = this.coinsList.stream();
-		insert = coinsStream.map(x->x.getValeur()).reduce(0f, Float ::sum);
-		return insert;
+		amount = coinsStream.map(x->FloatConverterInterfaceImpl.getFloatWithTwoDecimal(x.getValeur())).reduce(0f, Float ::sum);
+		return FloatConverterInterfaceImpl.getFloatWithTwoDecimal(amount);
 	}
 
 	public List<Coins> getCoinsList() {

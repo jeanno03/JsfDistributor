@@ -2,9 +2,9 @@ package com.jsf.controllers;
 
 import java.util.List;
 
-import com.jsf.classes.ContainerBean;
-import com.jsf.classes.DistributorBean;
-import com.jsf.classes.DrinkBean;
+import com.jsf.beans.ContainerBean;
+import com.jsf.beans.DistributorBean;
+import com.jsf.beans.DrinkBean;
 import com.jsf.constants.MyConstant;
 import com.jsf.daos.ContainerDao;
 import com.jsf.daos.DistributorDao;
